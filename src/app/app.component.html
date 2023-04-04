@@ -1,4 +1,7 @@
 <mat-toolbar>
   <span>Kompetensexempel</span>
 </mat-toolbar>
-<app-occupation-group-picker></app-occupation-group-picker>
+<app-occupation-group-picker (occupationGroup)="selectOccupationGroup($event)"></app-occupation-group-picker>
+<mat-chip-listbox aria-label="Select skills" multiple>
+  <mat-chip-option *ngFor="let skill of selectableSkills" [selected]="skill.selected" (selectionChange)="selectSkill($event, skill)">{{skill.concept.preferredLabel}}</mat-chip-option>
+</mat-chip-listbox>
