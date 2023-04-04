@@ -50,12 +50,38 @@ export class TaxonomyService {
     )
   }
 
+  fetchJobSearchSkills(concepts: TaxonomyConcept[]): Observable<string[]> {
+  
+    let params = new HttpParams();
+
+    params = params.append('qfields', 'skill')
+    concepts.forEach(concept => {
+      params = params.append(`skill`, concept.id);
+    })
+
+    const options = { params: params };
+
+    return this.http.get<JobSearchCompleteResponse>('https://jobsearch.api.jobtechdev.se/complete', options).pipe(
+      map(value => {
+        return value.typeahead.map(typeahead => { return typeahead.value })
+      })
+    )
+  }
+
 }
 
 export interface Autocomplete {
   'taxonomy/id': string;
   'taxonomy/type': string;
   'taxonomy/preferred-label': string;
+}
+
+export interface JobSearchCompleteResponse {
+  typeahead: [
+    {
+      value: string
+    }
+  ]
 }
 
 export interface SkillLookupResponse {

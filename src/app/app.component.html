@@ -5,3 +5,5 @@
 <mat-chip-listbox aria-label="Select skills" multiple>
   <mat-chip-option *ngFor="let skill of selectableSkills" [selected]="skill.selected" (selectionChange)="selectSkill($event, skill)">{{skill.concept.preferredLabel}}</mat-chip-option>
 </mat-chip-listbox>
+<mat-divider></mat-divider>
+<span *ngFor="let skill of jobSearchSkills">{{ skill }} </span>

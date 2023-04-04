@@ -11,6 +11,7 @@ export class AppComponent {
   title = 'CompetenceProfile';
   selectedOccupationGroup: TaxonomyConcept | undefined
   selectableSkills: SelectableTaxonomyConcept[] = []
+  jobSearchSkills: string[] = []
 
   constructor(private taxonomy: TaxonomyService) {}
   
@@ -25,7 +26,12 @@ export class AppComponent {
 
   selectSkill(change: MatChipSelectionChange, skill: SelectableTaxonomyConcept) {
     skill.selected = change.selected
-    let s = this.selectableSkills.filter(skill => { return skill.selected })
+    let concepts = this.selectableSkills.filter(skill => { return skill.selected }).map(value => { return value.concept })
+    this.taxonomy.fetchJobSearchSkills(concepts).subscribe(skills => {
+      this.jobSearchSkills = skills
+      console.log(skills);
+      
+    })
   }
 }
 
