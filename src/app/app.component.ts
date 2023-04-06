@@ -29,8 +29,6 @@ export class AppComponent {
     let concepts = this.selectableSkills.filter(skill => { return skill.selected }).map(value => { return value.concept })
     this.taxonomy.fetchJobSearchSkills(concepts).subscribe(skills => {
       this.jobSearchSkills = skills
-      console.log(skills);
-      
     })
   }
 }

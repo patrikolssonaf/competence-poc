@@ -10,8 +10,14 @@ export class TaxonomyService {
   constructor(private http: HttpClient) { }
 
   autocomplete(term: string | null): Observable<Autocomplete[]> {
-    term = term ? term.trim() : '';
-  
+    var params = new HttpParams()
+
+    console.log(term);
+    if (typeof term === 'string') {
+      term = term ? term.trim() : '';
+      params = params.append('query-string', term)
+    }
+
     // Add safe, URL encoded search parameter if there is a search term
     const options = term ?
      { params: new HttpParams().set('query-string', term).set('type', 'ssyk-level-4') } : {};

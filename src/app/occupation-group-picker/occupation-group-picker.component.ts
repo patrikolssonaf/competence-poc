@@ -32,7 +32,6 @@ export class OccupationGroupPickerComponent {
   select(item: Autocomplete) {
     let concept = new TaxonomyConcept(item['taxonomy/id'], item['taxonomy/type'], item['taxonomy/preferred-label'])
     this.occupationGroup.emit(concept)
-    console.log(concept.preferredLabel);
   }
 
 }
