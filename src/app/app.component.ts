@@ -12,6 +12,7 @@ export class AppComponent {
   selectedOccupationGroup: TaxonomyConcept | undefined
   selectableSkills: SelectableTaxonomyConcept[] = []
   jobSearchSkills: string[] = []
+  recomendedTaxOccupations: TaxonomyConcept[] = []
 
   constructor(private taxonomy: TaxonomyService) {}
   
@@ -29,6 +30,12 @@ export class AppComponent {
     let concepts = this.selectableSkills.filter(skill => { return skill.selected }).map(value => { return value.concept })
     this.taxonomy.fetchJobSearchSkills(concepts).subscribe(skills => {
       this.jobSearchSkills = skills
+    })
+  }
+
+  fetchOccupation() {
+    this.taxonomy.convertJSSkillsToTXOccupations(this.jobSearchSkills).subscribe(concepts => {
+      this.recomendedTaxOccupations = concepts
     })
   }
 }

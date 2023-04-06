@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, concatAll, concatMap, flatMap, map, mergeMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +61,7 @@ export class TaxonomyService {
     let params = new HttpParams();
 
     params = params.append('qfields', 'skill')
+    params = params.append('contextual', 'true')
     concepts.forEach(concept => {
       params = params.append(`skill`, concept.id);
     })
@@ -69,11 +70,40 @@ export class TaxonomyService {
 
     return this.http.get<JobSearchCompleteResponse>('https://jobsearch.api.jobtechdev.se/complete', options).pipe(
       map(value => {
-        return value.typeahead.map(typeahead => { return typeahead.value })
+        return value.typeahead
+        .filter(value => {
+          return value.type == 'skill'
+        })
+        .map(typeahead => { return typeahead.value })
       })
     )
   }
 
+  convertJSSkillsToTXOccupations(skills: string[]): Observable<TaxonomyConcept[]> {
+  
+    let queryString = skills.map(skill => {
+      return '+' + skill
+    })
+    let params = new HttpParams();
+
+    params = params.append('q', queryString.join(" "))
+    params = params.append('stats', 'occupation-name')
+    params = params.append('limit', 0)
+
+    const options = { params: params };
+
+    return this.http.get<JobSearchResponse>('https://jobsearch.api.jobtechdev.se/search', options)
+    .pipe(
+      map(value => { return value.stats }),
+      concatAll(),
+      map(value => {
+        return value.values.map(value => { 
+          return new TaxonomyConcept(value.concept_id, "occupation-name", value.term)
+        })
+      })
+      )
+      
+  }
 }
 
 export interface Autocomplete {
@@ -81,11 +111,24 @@ export interface Autocomplete {
   'taxonomy/type': string;
   'taxonomy/preferred-label': string;
 }
+export interface JobSearchResponse {
+  stats: [
+    {
+      values: [
+        {
+          term: string
+          concept_id: string
+        }
+      ]
+    }
+  ]
+}
 
 export interface JobSearchCompleteResponse {
   typeahead: [
     {
       value: string
+      type: string
     }
   ]
 }

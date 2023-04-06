@@ -6,4 +6,11 @@
   <mat-chip-option *ngFor="let skill of selectableSkills" [selected]="skill.selected" (selectionChange)="selectSkill($event, skill)">{{skill.concept.preferredLabel}}</mat-chip-option>
 </mat-chip-listbox>
 <mat-divider></mat-divider>
+<div>
 <span *ngFor="let skill of jobSearchSkills">{{ skill }} </span>
+<input type="button" value="Fetch occupation" (click)="fetchOccupation()">
+</div>
+<h3>Taxonomiyrken ({{recomendedTaxOccupations.length}}):</h3>
+<div *ngFor="let occupation of recomendedTaxOccupations">
+  {{occupation.preferredLabel}}
+</div>
