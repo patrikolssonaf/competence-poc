@@ -18,13 +18,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { OntologyPickerComponent } from './ontology-picker/ontology-picker.component';
 import { JobAdEnrichmentComponent } from './job-ad-enrichment/job-ad-enrichment.component';
+import { OntologyComponent } from './ontology/ontology.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OccupationGroupPickerComponent,
     OntologyPickerComponent,
-    JobAdEnrichmentComponent
+    JobAdEnrichmentComponent,
+    OntologyComponent
   ],
   imports: [
     BrowserModule,

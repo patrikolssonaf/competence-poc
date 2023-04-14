@@ -1,10 +1,9 @@
-<p>occupation-group-picker works!</p>
 <form class="example-form">
     <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Number</mat-label>
+      <mat-label>{{conceptType}}</mat-label>
       <input type="text"
              placeholder="Pick one"
-             aria-label="Number"
+             aria-label="Occupation"
              matInput
              [formControl]="occupationGroupControl"
              [matAutocomplete]="auto">
