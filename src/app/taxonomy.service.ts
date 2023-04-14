@@ -9,7 +9,7 @@ export class TaxonomyService {
 
   constructor(private http: HttpClient) { }
 
-  autocomplete(term: string | null): Observable<Autocomplete[]> {
+  autocomplete(term: string | null, type: string): Observable<Autocomplete[]> {
     var params = new HttpParams()
 
     console.log(term);
@@ -20,7 +20,7 @@ export class TaxonomyService {
 
     // Add safe, URL encoded search parameter if there is a search term
     const options = term ?
-     { params: new HttpParams().set('query-string', term).set('type', 'ssyk-level-4') } : {};
+     { params: new HttpParams().set('query-string', term).set('type', type) } : {};
   
     return this.http.get<Autocomplete[]>('https://taxonomy.api.jobtechdev.se/v1/taxonomy/suggesters/autocomplete', options)
   }

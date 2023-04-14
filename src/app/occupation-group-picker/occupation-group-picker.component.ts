@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { Autocomplete, TaxonomyConcept, TaxonomyService } from '../taxonomy.service';
@@ -11,6 +11,7 @@ import { Autocomplete, TaxonomyConcept, TaxonomyService } from '../taxonomy.serv
 })
 export class OccupationGroupPickerComponent {
 
+  @Input() conceptType = ''
   @Output() occupationGroup = new EventEmitter<TaxonomyConcept>();
   occupationGroupControl = new FormControl('');
   occupationGroups: Observable<Autocomplete[]> | undefined;
@@ -21,7 +22,7 @@ export class OccupationGroupPickerComponent {
     this.occupationGroups = this.occupationGroupControl.valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap(value => this.taxonomy.autocomplete(value))
+      switchMap(value => this.taxonomy.autocomplete(value, this.conceptType))
     );
   }
 
