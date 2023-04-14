@@ -11,17 +11,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
 
 import { OccupationGroupPickerComponent } from './occupation-group-picker/occupation-group-picker.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { OntologyPickerComponent } from './ontology-picker/ontology-picker.component';
+import { JobAdEnrichmentComponent } from './job-ad-enrichment/job-ad-enrichment.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OccupationGroupPickerComponent,
-    OntologyPickerComponent
+    OntologyPickerComponent,
+    JobAdEnrichmentComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +40,7 @@ import { OntologyPickerComponent } from './ontology-picker/ontology-picker.compo
     MatChipsModule,
     MatDividerModule,
     MatTabsModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

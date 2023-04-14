@@ -34,6 +34,11 @@ export class OntologyService {
       )
     );
   }
+
+  getEnrichment(request: EnrichDocumentRequest): Observable<DocumentEnriched[]> {
+    return this.http.post<DocumentEnriched[]>("https://jobad-enrichments-api.jobtechdev.se/enrichtextdocumentsbinary", request);
+  }
+
 }
 
 interface AllOntologyItemResponse {
@@ -51,3 +56,36 @@ export interface OntologyItem {
   plural_occupation: boolean;
   definite_occupation: boolean;
 }
+
+export interface EnrichDocument {
+  doc_id: string;
+  doc_headline: string;
+  doc_text: string;
+}
+
+export interface EnrichDocumentRequest {
+  documents_input: EnrichDocument[];
+  include_terms_info: boolean;
+  include_sentences: boolean;
+  include_synonyms: boolean;
+  include_misspelled_synonyms: boolean;
+}
+
+export interface EnrichConcept {
+  concept_label: string;
+  term: string;
+}
+
+export interface EnrichedCandidates {
+  occupations: EnrichConcept[];
+  competencies: EnrichConcept[];
+  traits: EnrichConcept[];
+  geos: EnrichConcept[];
+}
+
+export interface DocumentEnriched {
+  doc_id: string;
+  doc_headline: string;
+  enriched_candidates: EnrichedCandidates;
+}
+
