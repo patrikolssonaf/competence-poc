@@ -37,4 +37,9 @@ export class JobAdEnrichmentComponent {
       this.enrichments = value
     })
   }
+
+  empty() {
+    this.headlineInputControl.setValue("")
+    this.textInputControl.setValue("")
+  }
 }
