@@ -39,14 +39,6 @@ export class OntologyService {
     return this.http.post<DocumentEnriched[]>("https://jobad-enrichments-api.jobtechdev.se/enrichtextdocumentsbinary", request);
   }
 
-  getEnrichedOccupation(occupationId: string): Observable<OccupationData> {
-
-    const options = occupationId ?
-    { params: new HttpParams().set('occupation_id', occupationId).set('include_metadata', "true") } : {};
-    
-    return this.http.get<OccupationData>("https://jobed-connect-api.jobtechdev.se/v1/enriched_occupations", options)
-  }
-
 }
 
 interface AllOntologyItemResponse {
@@ -95,35 +87,4 @@ export interface DocumentEnriched {
   doc_id: string;
   doc_headline: string;
   enriched_candidates: EnrichedCandidates;
-}
-
-export interface TermFrequency {
-  term: string;
-  percent_for_occupation: number;
-}
-
-export interface EnrichedCandidatesTermFrequency {
-  competencies: TermFrequency[];
-}
-
-export interface Metadata {
-  enriched_ads_count: number;
-  enriched_ads_total_count: number;
-  enriched_ads_percent_of_total: number;
-  enriched_candidates_term_frequency: EnrichedCandidatesTermFrequency;
-}
-
-export interface OccupationGroup {
-  occupation_group_label: string;
-  concept_taxonomy_id: string;
-  ssyk: string;
-}
-
-export interface OccupationData {
-  id: string;
-  occupation_label: string;
-  concept_taxonomy_id: string;
-  legacy_ams_taxonomy_id: string;
-  occupation_group: OccupationGroup;
-  metadata: Metadata;
 }

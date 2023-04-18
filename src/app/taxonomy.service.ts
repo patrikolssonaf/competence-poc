@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, concatAll, concatMap, flatMap, map, mergeMap } from 'rxjs';
-import { JobSearchCompleteResponse } from './job-search-api.service';
+import { JobSearchCompleteResponse, JobSearchResponse } from './job-search-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -111,18 +111,6 @@ export interface Autocomplete {
   'taxonomy/id': string;
   'taxonomy/type': string;
   'taxonomy/preferred-label': string;
-}
-export interface JobSearchResponse {
-  stats: [
-    {
-      values: [
-        {
-          term: string
-          concept_id: string
-        }
-      ]
-    }
-  ]
 }
 
 export interface SkillLookupResponse {

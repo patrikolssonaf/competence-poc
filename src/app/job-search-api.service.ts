@@ -27,6 +27,43 @@ export class JobSearchAPIService {
     return this.http.get<JobSearchCompleteResponse>('https://jobsearch.api.jobtechdev.se/complete', options)
   }
 
+  search(request: JobSearchSearchRequest): Observable<JobSearchResponse> {
+    let params = new HttpParams();
+
+    if (request.q.length > 1) {
+      params = params.append('q', request.q)
+    }
+    if (request['stats.limit'] >= 1) {
+      params = params.append('stats.limit', request['stats.limit'])
+    }
+    request.stats.forEach(field => {
+      params = params.append(`stats`, field);
+    })
+
+    const options = { params: params };
+    return this.http.get<JobSearchResponse>('https://jobsearch.api.jobtechdev.se/search', options)      
+  }
+
+}
+
+export interface JobSearchSearchRequest {
+  q: string,
+  stats: string[]
+  'stats.limit': number
+  limit: number
+}
+
+export interface JobSearchResponse {
+  stats: [
+    {
+      values: [
+        {
+          term: string
+          concept_id: string
+        }
+      ]
+    }
+  ]
 }
 
 export interface JobSearchCompleteRequest {

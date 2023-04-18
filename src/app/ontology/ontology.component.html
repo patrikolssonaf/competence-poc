@@ -1,10 +1,17 @@
 <app-ontology-skill-picker (selectedSkill)="selectSkill($event)"></app-ontology-skill-picker>
 <mat-chip-listbox aria-label="Select skills" multiple>
-    <mat-chip-option *ngFor="let skill of selectedSkills">{{skill}}</mat-chip-option>
+  <mat-chip-option *ngFor="let skill of selectedSkills">{{skill}}</mat-chip-option>
 </mat-chip-listbox>
 <mat-divider></mat-divider>
-<button mat-raised-button (click)="fetchOccupations()">Hämta yrken</button>
+<div>
+  <p>Recommendations ({{ occupationForRecomendation?.preferredLabel }})</p>
+  <button mat-raised-button (click)="fetchRecomendations()">Recomendations</button>
+  <mat-chip-listbox aria-label="Recomended skills" multiple>
+    <mat-chip-option *ngFor="let skill of recommendedSkills" (selectionChange)="selectSkill(skill)">{{skill}}</mat-chip-option>
+  </mat-chip-listbox>
+</div>
+<mat-divider></mat-divider>
+<button mat-raised-button (click)="fetchOccupations()">Hämta yrken (Jobed)</button>
 <div>
   <div *ngFor="let occupation of recomendedOccupations">{{occupation.preferredLabel}}</div>
 </div>
-
