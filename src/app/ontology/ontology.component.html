@@ -3,13 +3,21 @@
   <mat-chip-option *ngFor="let skill of selectedSkills">{{skill}}</mat-chip-option>
 </mat-chip-listbox>
 <mat-divider></mat-divider>
-<div>
-  <p>Recommendations ({{ occupationForRecomendation?.preferredLabel }})</p>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Recommendations
+    </mat-panel-title>
+    <mat-panel-description>
+      {{ occupationForRecomendation?.preferredLabel }}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
   <button mat-raised-button (click)="fetchRecomendations()">Recomendations</button>
   <mat-chip-listbox aria-label="Recomended skills" multiple>
-    <mat-chip-option *ngFor="let skill of recommendedSkills" (selectionChange)="selectSkill(skill)">{{skill}}</mat-chip-option>
+    <mat-chip-option *ngFor="let skill of recommendedSkills"
+      (selectionChange)="selectSkill(skill)">{{skill}}</mat-chip-option>
   </mat-chip-listbox>
-</div>
+</mat-expansion-panel>
 <mat-divider></mat-divider>
 <button mat-raised-button (click)="fetchOccupations()">Hämta yrken (Jobed)</button>
 <div>
@@ -19,6 +27,6 @@
 <button mat-raised-button (click)="fetchAds()">Hämta annonser</button>
 <div>
   <div *ngFor="let item of jobsearchResponse?.hits">
-    <a href="https://arbetsformedlingen.se/platsbanken/annonser/{{item.id}}" target="_blank">{{item.headline}}</a> 
+    <a href="https://arbetsformedlingen.se/platsbanken/annonser/{{item.id}}" target="_blank">{{item.headline}}</a>
   </div>
 </div>

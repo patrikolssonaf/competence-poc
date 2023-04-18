@@ -12,6 +12,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { OccupationGroupPickerComponent } from './occupation-group-picker/occupation-group-picker.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -45,6 +46,7 @@ import { OntologySkillPickerComponent } from './ontology-skill-picker/ontology-s
     MatDividerModule,
     MatTabsModule,
     MatButtonModule,
+    MatExpansionModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
