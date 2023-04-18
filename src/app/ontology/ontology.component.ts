@@ -3,7 +3,7 @@ import { SelectableTaxonomyConcept } from '../app.component';
 import { TaxonomyConcept } from '../taxonomy.service';
 import { OntologyService } from '../ontology.service';
 import { JobedConnectAPIService, JobedEnrichedOccupationsRequest, JobedMatchByTextRequest } from '../jobed-connect-api.service';
-import { JobSearchAPIService, JobSearchSearchRequest } from '../job-search-api.service';
+import { JobSearchAPIService, JobSearchResponse, JobSearchSearchRequest } from '../job-search-api.service';
 import { switchMap } from 'rxjs';
 
 @Component({
@@ -20,6 +20,7 @@ export class OntologyComponent {
   occupationForRecomendation: TaxonomyConcept | undefined
   recommendedSkills: string[] = []
   recomendedOccupations: TaxonomyConcept[] = []
+  jobsearchResponse: JobSearchResponse | undefined
 
   constructor(
     private ontology: OntologyService, 
@@ -79,6 +80,18 @@ export class OntologyComponent {
       this.recomendedOccupations = response.related_occupations.map(value => {
         return new TaxonomyConcept(value.concept_taxonomy_id, "occupation-name", value.occupation_label)
       })
+    })
+  }
+
+  fetchAds() {
+    const request: JobSearchSearchRequest = {
+      q: this.selectedSkills.join(" "),
+      limit: 10,
+      stats: [],
+      "stats.limit": 0
+    }
+    this.jobsearch.search(request).subscribe(response => {
+      this.jobsearchResponse = response
     })
   }
 }

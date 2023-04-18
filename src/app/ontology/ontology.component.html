@@ -15,3 +15,10 @@
 <div>
   <div *ngFor="let occupation of recomendedOccupations">{{occupation.preferredLabel}}</div>
 </div>
+<mat-divider></mat-divider>
+<button mat-raised-button (click)="fetchAds()">Hämta annonser</button>
+<div>
+  <div *ngFor="let item of jobsearchResponse?.hits">
+    <a href="https://arbetsformedlingen.se/platsbanken/annonser/{{item.id}}" target="_blank">{{item.headline}}</a> 
+  </div>
+</div>

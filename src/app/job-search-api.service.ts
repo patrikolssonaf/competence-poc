@@ -64,6 +64,12 @@ export interface JobSearchResponse {
       ]
     }
   ]
+  hits: [
+    {
+      id: string
+      headline: string
+    }
+  ]
 }
 
 export interface JobSearchCompleteRequest {
