@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, concatAll, concatMap, flatMap, map, mergeMap } from 'rxjs';
+import { JobSearchCompleteResponse } from './job-search-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -120,15 +121,6 @@ export interface JobSearchResponse {
           concept_id: string
         }
       ]
-    }
-  ]
-}
-
-export interface JobSearchCompleteResponse {
-  typeahead: [
-    {
-      value: string
-      type: string
     }
   ]
 }

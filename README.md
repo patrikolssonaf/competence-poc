@@ -25,3 +25,16 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Problem
+Get some input from user.
+Return som result to user
+Give user a way forward by selecting something
+Repeat
+
+## Ontology
+Sök skill
+Hämta yrken (TX) för skill
+Välj yrke
+Hämta skills för yrke
+Visa sökresultat i Platsbanken för alla skills

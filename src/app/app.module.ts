@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { OntologyPickerComponent } from './ontology-picker/ontology-picker.component';
 import { JobAdEnrichmentComponent } from './job-ad-enrichment/job-ad-enrichment.component';
 import { OntologyComponent } from './ontology/ontology.component';
+import { OntologySkillPickerComponent } from './ontology-skill-picker/ontology-skill-picker.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { OntologyComponent } from './ontology/ontology.component';
     OccupationGroupPickerComponent,
     OntologyPickerComponent,
     JobAdEnrichmentComponent,
-    OntologyComponent
+    OntologyComponent,
+    OntologySkillPickerComponent
   ],
   imports: [
     BrowserModule,

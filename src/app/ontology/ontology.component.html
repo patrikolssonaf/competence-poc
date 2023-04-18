@@ -1,7 +1,10 @@
-<app-occupation-group-picker (occupationGroup)="selectOccupation($event)" conceptType="occupation-name"></app-occupation-group-picker>
-<p>
-    <span *ngFor="let term of terms">{{ term }} </span>
-</p>
-<p>
-    <span *ngFor="let term of extraTerms">{{ term }} </span>
-</p>
+<app-ontology-skill-picker (selectedSkill)="selectSkill($event)"></app-ontology-skill-picker>
+<mat-chip-listbox aria-label="Select skills" multiple>
+    <mat-chip-option *ngFor="let skill of selectedSkills">{{skill}}</mat-chip-option>
+</mat-chip-listbox>
+<mat-divider></mat-divider>
+<button mat-raised-button (click)="fetchOccupations()">Hämta yrken</button>
+<div>
+  <div *ngFor="let occupation of recomendedOccupations">{{occupation.preferredLabel}}</div>
+</div>
+
