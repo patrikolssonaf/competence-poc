@@ -54,6 +54,9 @@ export interface JobSearchSearchRequest {
 }
 
 export interface JobSearchResponse {
+  total: {
+    value: number
+  }
   stats: [
     {
       values: [

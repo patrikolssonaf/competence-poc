@@ -1,0 +1,24 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Skill</mat-label>
+      <input type="text"
+             placeholder="Write a skill"
+             aria-label="Write a skill"
+             matInput
+             [formControl]="autocompleteControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="setOriginSkill($event)" [displayWith]="displayOriginSkill">
+        <mat-option *ngFor="let skill of autocompleteSkills | async" [value]="skill">
+          {{skill.term}} ({{skill.concept}})
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button mat-raised-button color="warn" (click)="clearOriginSkill()">Rensa</button>
+  </form>
+  <mat-divider></mat-divider>
+  <div>
+    <p>Hittade {{jobsearchResponse?.total?.value}} annonser med kompetens: {{jobsearchRequest?.q}}</p>
+    <div *ngFor="let item of jobsearchResponse?.hits">
+      <a href="https://arbetsformedlingen.se/platsbanken/annonser/{{item.id}}" target="_blank">{{item.headline}}</a>
+    </div>
+  </div>

@@ -2,6 +2,9 @@
   <span>Kompetensexempel</span>
 </mat-toolbar>
 <mat-tab-group>
+  <mat-tab label="POC">
+    <app-poc></app-poc>
+  </mat-tab>
   <mat-tab label="Taxonomy">
     <app-occupation-group-picker (occupationGroup)="selectOccupationGroup($event)" conceptType="ssyk-level-4"></app-occupation-group-picker>
     <mat-chip-listbox aria-label="Select skills" multiple>
