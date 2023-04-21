@@ -17,8 +17,9 @@
   </form>
   <mat-divider></mat-divider>
   <div>
-    <p>Hittade {{jobsearchResponse?.total?.value}} annonser med kompetens: {{jobsearchRequest?.q}}</p>
-    <div *ngFor="let item of jobsearchResponse?.hits">
+    <p>Hittade {{jobSearchResult?.totalHits}} annonser med kompetens: {{jobsearchRequest?.q}}</p>
+    <div *ngFor="let item of jobSearchResult?.hits">
       <a href="https://arbetsformedlingen.se/platsbanken/annonser/{{item.id}}" target="_blank">{{item.headline}}</a>
+      <span *ngFor="let skill of item.skills">{{skill.concept_label}} - </span>
     </div>
   </div>

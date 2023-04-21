@@ -71,6 +71,9 @@ export interface JobSearchResponse {
     {
       id: string
       headline: string
+      description: {
+        text: string
+      }
     }
   ]
 }
