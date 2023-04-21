@@ -9,10 +9,15 @@
       Recommendations
     </mat-panel-title>
     <mat-panel-description>
-      {{ occupationForRecomendation?.preferredLabel }}
+      Fetch competence recomendations from ads in Platsbanken
     </mat-panel-description>
   </mat-expansion-panel-header>
   <button mat-raised-button (click)="fetchRecomendations()">Recomendations</button>
+  <div>
+    <p>Search ads in Platsbanken that include: {{selectedSkills[0]}}</p>
+    <p>Competences for occupation: {{ occupationForRecomendation?.preferredLabel }}</p>
+  </div>
+  
   <mat-chip-listbox aria-label="Recomended skills" multiple>
     <mat-chip-option *ngFor="let skill of recommendedSkills"
       (selectionChange)="selectSkill(skill)">{{skill}}</mat-chip-option>

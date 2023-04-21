@@ -8,8 +8,8 @@
              [formControl]="autocompleteControl"
              [matAutocomplete]="auto">
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-        <mat-option *ngFor="let skill of skills | async" [value]="skill.value">
-          {{skill.value}}
+        <mat-option *ngFor="let skill of skills | async" [value]="skill.concept">
+          {{skill.term}} ({{skill.concept}})
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

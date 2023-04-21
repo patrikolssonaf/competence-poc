@@ -2,7 +2,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { JobSearchAPIService, JobSearchCompleteRequest, JobSearchCompleteTypeAhead } from '../job-search-api.service';
 import { FormControl } from '@angular/forms';
 import { Observable, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs';
-import { OntologyItem } from '../ontology.service';
+import { OntologyItem, OntologyService } from '../ontology.service';
+import { JobedConnectAPIService } from '../jobed-connect-api.service';
 
 @Component({
   selector: 'app-ontology-skill-picker',
@@ -12,27 +13,23 @@ import { OntologyItem } from '../ontology.service';
 export class OntologySkillPickerComponent {
   @Output() selectedSkill = new EventEmitter<string>();
   autocompleteControl = new FormControl('');
-  skills: Observable<JobSearchCompleteTypeAhead[]> | undefined;
+  skills: Observable<OntologyItem[]> | undefined;
 
-  constructor(private jobsearch: JobSearchAPIService) { }
+  constructor(private jobsearch: JobSearchAPIService, private ontology: OntologyService) { }
   
   ngOnInit() {
     this.skills = this.autocompleteControl.valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
       switchMap(value => {
-        const request: JobSearchCompleteRequest = {
-          q: value ?? "",
-          qfields: ["skill"]
-        }
-        return this.jobsearch.complete(request)
-      }),
-      map(value => value.typeahead)
+        return this.ontology.getSuggestions(value ?? "")
+      })
     );
   }
 
-  displayFn(item: JobSearchCompleteTypeAhead): string {
-    return item.value
+  displayFn(item: OntologyItem): string {
+    //return `${item.term} (${item.concept})`
+    return item.concept
   }
 
   select() {
