@@ -13,6 +13,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 
 import { OccupationGroupPickerComponent } from './occupation-group-picker/occupation-group-picker.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -49,6 +51,8 @@ import { PocComponent } from './poc/poc.component';
     MatTabsModule,
     MatButtonModule,
     MatExpansionModule,
+    MatGridListModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

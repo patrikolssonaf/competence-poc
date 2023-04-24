@@ -1,0 +1,13 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: auto 200px;
+    padding: 10px;
+}
+
+.grid-item {
+    padding: 20px;
+}
+
+.jobad-card {
+    margin-bottom: 8px;
+}
