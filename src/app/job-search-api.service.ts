@@ -40,6 +40,10 @@ export class JobSearchAPIService {
       params = params.append(`stats`, field);
     })
 
+    request.skills.forEach(skill => {
+      params = params.append(`skill`, skill);
+    })
+
     const options = { params: params };
     return this.http.get<JobSearchResponse>('https://jobsearch.api.jobtechdev.se/search', options)      
   }
@@ -51,6 +55,7 @@ export interface JobSearchSearchRequest {
   stats: string[]
   'stats.limit': number
   limit: number
+  skills: string[]
 }
 
 export interface JobSearchResponse {
@@ -73,6 +78,20 @@ export interface JobSearchResponse {
       headline: string
       description: {
         text: string
+      }
+      must_have: {
+        skills: [{
+          weight: number
+          concept_id: string
+          label: string
+        }]
+      }
+      nice_to_have: {
+        skills: [{
+          weight: number
+          concept_id: string
+          label: string
+        }]
       }
     }
   ]

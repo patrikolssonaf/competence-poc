@@ -12,6 +12,15 @@
         (selectionChange)="selectSkill($event, skill)">{{skill.concept.preferredLabel}}</mat-chip-option>
     </mat-chip-listbox>
     <mat-divider></mat-divider>
+    <h3>Hittade {{jobsearchResponse?.total?.value}} annonser</h3>
+    <div *ngFor="let jobad of jobsearchResponse?.hits">
+      {{jobad.headline}}
+      <mat-chip-listbox aria-label="Skills" multiple>
+        <mat-chip-option *ngFor="let skill of jobad.must_have.skills" color="accent">{{skill.label}}</mat-chip-option>
+        <mat-chip-option *ngFor="let skill of jobad.nice_to_have.skills" color="primary">{{skill.label}}</mat-chip-option>
+      </mat-chip-listbox>
+    </div>
+    <mat-divider></mat-divider>
     <div>
       <span *ngFor="let skill of jobSearchSkills">{{ skill }} </span>
       <input type="button" value="Fetch occupation" (click)="fetchOccupation()">

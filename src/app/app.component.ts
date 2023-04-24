@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TaxonomyConcept, TaxonomyService } from './taxonomy.service';
 import { MatChipSelectionChange } from '@angular/material/chips';
+import { JobSearchAPIService, JobSearchResponse, JobSearchSearchRequest } from './job-search-api.service';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +14,9 @@ export class AppComponent {
   selectableSkills: SelectableTaxonomyConcept[] = []
   jobSearchSkills: string[] = []
   recomendedTaxOccupations: TaxonomyConcept[] = []
+  jobsearchResponse: JobSearchResponse | undefined
 
-  constructor(private taxonomy: TaxonomyService) {}
+  constructor(private taxonomy: TaxonomyService, private jobsearch: JobSearchAPIService) {}
   
   selectOccupationGroup(item: TaxonomyConcept) {
     this.selectedOccupationGroup = item
@@ -30,6 +32,17 @@ export class AppComponent {
     let concepts = this.selectableSkills.filter(skill => { return skill.selected }).map(value => { return value.concept })
     this.taxonomy.fetchJobSearchSkills(concepts).subscribe(skills => {
       this.jobSearchSkills = skills
+    })
+
+    const request: JobSearchSearchRequest = {
+      q: "",
+      limit: 10,
+      stats: [],
+      "stats.limit": 0,
+      skills: concepts.map(concept => concept.id)
+    }
+    this.jobsearch.search(request).subscribe(respone => {
+      this.jobsearchResponse = respone
     })
   }
 

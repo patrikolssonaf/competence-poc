@@ -56,7 +56,8 @@ export class PocComponent {
       q: this.originSkill?.concept ?? "",
       limit: 10,
       stats: [],
-      "stats.limit": 0
+      "stats.limit": 0,
+      skills: []
     }
     this.jobsearchRequest = request
     this.jobsearch.search(request).pipe(

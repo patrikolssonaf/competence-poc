@@ -51,7 +51,8 @@ export class OntologyComponent {
       q: this.selectedSkills[0],
       limit: 0,
       stats: ['occupation-name'],
-      "stats.limit": 1
+      "stats.limit": 1,
+      skills: []
     }
     this.jobsearch.search(request).pipe(
       switchMap((value, index) => {
@@ -88,7 +89,8 @@ export class OntologyComponent {
       q: this.selectedSkills.join(" "),
       limit: 10,
       stats: [],
-      "stats.limit": 0
+      "stats.limit": 0,
+      skills: []
     }
     this.jobsearch.search(request).subscribe(response => {
       this.jobsearchResponse = response
