@@ -5,6 +5,7 @@ import { EnrichDocument, EnrichDocumentRequest, OntologyItem, OntologyService } 
 import { JobSearchAPIService, JobSearchResponse, JobSearchSearchRequest } from '../job-search-api.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipSelectionChange } from '@angular/material/chips';
+import { JobedConnectAPIService, JobedMatchByTextRequest, RelatedOccupation } from '../jobed-connect-api.service';
 
 @Component({
   selector: 'app-poc',
@@ -19,8 +20,12 @@ export class PocComponent {
   jobsearchRequest: JobSearchSearchRequest | undefined
   jobSearchResult: JobSearchResult | undefined
   selectedSkills: Set<string> = new Set()
+  relatedOccupations: RelatedOccupation[] = []
 
-  constructor(private jobsearch: JobSearchAPIService, private ontology: OntologyService) { }
+  constructor(
+    private jobsearch: JobSearchAPIService, 
+    private ontology: OntologyService,
+    private jobed: JobedConnectAPIService) { }
   
   ngOnInit() {
     this.autocompleteSkills = this.autocompleteControl.valueChanges.pipe(
@@ -105,6 +110,14 @@ export class PocComponent {
       this.selectedSkills.add(skill)
     } else {
       this.selectedSkills.delete(skill)
+    }
+    if (this.selectedSkills.size > 2) {
+      const request: JobedMatchByTextRequest = {
+        input_text: Array.from(this.selectedSkills).join(' ')
+      }
+      this.jobed.occupationsMatchByText(request).subscribe(response => {
+        this.relatedOccupations = response.related_occupations
+      })
     }
   }
 
