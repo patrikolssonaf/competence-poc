@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { EnrichDocument, EnrichDocumentRequest, OntologyItem, OntologyService } from '../ontology.service';
 import { JobSearchAPIService, JobSearchResponse, JobSearchSearchRequest } from '../job-search-api.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipSelectionChange } from '@angular/material/chips';
 
 @Component({
   selector: 'app-poc',
@@ -17,6 +18,7 @@ export class PocComponent {
   originSkill: OntologyItem | undefined
   jobsearchRequest: JobSearchSearchRequest | undefined
   jobSearchResult: JobSearchResult | undefined
+  selectedSkills: Set<string> = new Set()
 
   constructor(private jobsearch: JobSearchAPIService, private ontology: OntologyService) { }
   
@@ -96,6 +98,18 @@ export class PocComponent {
         }) ?? []
       })
     })
+  }
+
+  selectSkill(event: MatChipSelectionChange, skill: string) {
+    if (event.selected) {
+      this.selectedSkills.add(skill)
+    } else {
+      this.selectedSkills.delete(skill)
+    }
+  }
+
+  isSkillSelected(skill: string): boolean {
+    return this.selectedSkills.has(skill)
   }
 }
 

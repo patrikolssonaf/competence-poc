@@ -20,6 +20,13 @@
     <p>Hittade {{jobSearchResult?.totalHits}} annonser med kompetens: {{jobsearchRequest?.q}}</p>
     <div *ngFor="let item of jobSearchResult?.hits">
       <a href="https://arbetsformedlingen.se/platsbanken/annonser/{{item.id}}" target="_blank">{{item.headline}}</a>
-      <span *ngFor="let skill of item.skills">{{skill.concept_label}} - </span>
+      <mat-chip-listbox aria-label="Skills" multiple>
+        <mat-chip-option *ngFor="let skill of item.skills" (selectionChange)="selectSkill($event, skill.concept_label)" [selected]="isSkillSelected(skill.concept_label)">{{skill.concept_label}}</mat-chip-option>
+      </mat-chip-listbox>
     </div>
   </div>
+  <mat-divider></mat-divider>
+  <h3>Selected skills</h3>
+  <mat-chip-listbox aria-label="Recomended skills" multiple>
+    <mat-chip-option *ngFor="let skill of selectedSkills">{{skill}}</mat-chip-option>
+  </mat-chip-listbox>
