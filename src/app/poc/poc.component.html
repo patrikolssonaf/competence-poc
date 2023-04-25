@@ -15,6 +15,13 @@
       <button mat-raised-button color="warn" (click)="clearOriginSkill()">Rensa</button>
     </form>
     <mat-divider></mat-divider>
+    <h3>Kan du?</h3>
+    <mat-chip-listbox aria-label="Skills" multiple>
+      <mat-chip-option *ngFor="let skill of recomendedSkills"
+        (selectionChange)="selectSkill($event, skill)"
+        [selected]="isSkillSelected(skill)">{{skill}}</mat-chip-option>
+    </mat-chip-listbox>
+    <mat-divider></mat-divider>
     <p>Hittade {{jobSearchResult?.totalHits}} annonser med kompetens: {{jobsearchRequest?.q}}</p>
     <mat-card *ngFor="let item of jobSearchResult?.hits" class="jobad-card">
       <mat-card-content>

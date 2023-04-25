@@ -5,7 +5,7 @@ import { EnrichDocument, EnrichDocumentRequest, OntologyItem, OntologyService } 
 import { JobSearchAPIService, JobSearchResponse, JobSearchSearchRequest } from '../job-search-api.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipSelectionChange } from '@angular/material/chips';
-import { JobedConnectAPIService, JobedMatchByTextRequest, RelatedOccupation } from '../jobed-connect-api.service';
+import { JobedConnectAPIService, JobedEnrichedOccupationsRequest, JobedMatchByTextRequest, RelatedOccupation } from '../jobed-connect-api.service';
 
 @Component({
   selector: 'app-poc',
@@ -21,6 +21,7 @@ export class PocComponent {
   jobSearchResult: JobSearchResult | undefined
   selectedSkills: Set<string> = new Set()
   relatedOccupations: RelatedOccupation[] = []
+  recomendedSkills: string[] = []
 
   constructor(
     private jobsearch: JobSearchAPIService, 
@@ -47,17 +48,43 @@ export class PocComponent {
     this.selectedSkills.clear()
     this.selectedSkills.add(this.originSkill?.concept ?? "")
     this.fetchJobAds()
+    this.fetchSkillRecomendations()
   }
   
   displayOriginSkill(item: OntologyItem) {
     return item.term
   }
 
+  fetchSkillRecomendations() {
+    this.recomendedSkills = []
+    const request: JobSearchSearchRequest = {
+      q: Array.from(this.selectedSkills)[0],
+      limit: 0,
+      stats: ['occupation-name'],
+      "stats.limit": 1,
+      skills: []
+    }
+    this.jobsearch.search(request).pipe(
+      switchMap((value, index) => {
+        const occupation = value.stats[0].values[0]
+        const request: JobedEnrichedOccupationsRequest = {
+          occupation_id: occupation.concept_id,
+          include_metadata: true
+        }
+        return this.jobed.enrichedOccupations(request)
+      })
+    ).subscribe(value => {
+      this.recomendedSkills = value.metadata.enriched_candidates_term_frequency.competencies
+        .map(value => this.capitalizeFirstLetter(value.term))
+        .slice(0, 20)
+    })
+  }
+
   fetchJobAds() {
     const request: JobSearchSearchRequest = {
       q: Array.from(this.selectedSkills).join(' '),
       limit: 10,
-      stats: [],
+      stats: ['occupation-name'],
       "stats.limit": 0,
       skills: []
     }
@@ -73,7 +100,8 @@ export class PocComponent {
               description: hit.description.text,
               skills: []
             }
-          })
+          }),
+          stats: []
         }
         const doc: EnrichDocument[] = response.hits.map(hit => {
           return {
@@ -130,11 +158,25 @@ export class PocComponent {
   isSkillSelected(skill: string): boolean {
     return this.selectedSkills.has(skill)
   }
+
+  capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 }
 
 interface JobSearchResult {
   totalHits: number
   hits: JobAdItem[]
+  stats: StatsItem[]
+}
+
+interface StatsItem {
+  values: [
+    {
+      term: string
+      concept_id: string
+    }
+  ]
 }
 
 interface JobAdItemSkill {
