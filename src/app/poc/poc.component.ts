@@ -142,7 +142,7 @@ export class PocComponent {
     } else {
       this.selectedSkills.delete(skill)
     }
-    if (this.selectedSkills.size > 2) {
+    if (this.selectedSkills.size > 2 && event.isUserInput) {
       const request: JobedMatchByTextRequest = {
         input_text: Array.from(this.selectedSkills).join(' ')
       }
