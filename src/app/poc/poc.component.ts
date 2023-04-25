@@ -44,6 +44,8 @@ export class PocComponent {
   setOriginSkill(event: MatAutocompleteSelectedEvent) {
     console.log(event);
     this.originSkill = event.option.value
+    this.selectedSkills.clear()
+    this.selectedSkills.add(this.originSkill?.concept ?? "")
     this.fetchJobAds()
   }
   
@@ -53,7 +55,7 @@ export class PocComponent {
 
   fetchJobAds() {
     const request: JobSearchSearchRequest = {
-      q: this.originSkill?.concept ?? "",
+      q: Array.from(this.selectedSkills).join(' '),
       limit: 10,
       stats: [],
       "stats.limit": 0,
@@ -119,6 +121,9 @@ export class PocComponent {
       this.jobed.occupationsMatchByText(request).subscribe(response => {
         this.relatedOccupations = response.related_occupations
       })
+    }
+    if (event.isUserInput) {
+      this.fetchJobAds()
     }
   }
 
