@@ -38,3 +38,8 @@ Hämta yrken (TX) för skill
 Välj yrke
 Hämta skills för yrke
 Visa sökresultat i Platsbanken för alla skills
+
+## Deploy to Github Pages
+https://www.makeuseof.com/angular-app-github-deploy-using-angular-cli/
+git checkout gh-pages
+ng deploy --base-href=https://patrikolssonaf.github.io/competence-poc/
