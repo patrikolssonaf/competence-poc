@@ -24,6 +24,7 @@ import { JobAdEnrichmentComponent } from './job-ad-enrichment/job-ad-enrichment.
 import { OntologyComponent } from './ontology/ontology.component';
 import { OntologySkillPickerComponent } from './ontology-skill-picker/ontology-skill-picker.component';
 import { PocComponent } from './poc/poc.component';
+import { MappingComponent } from './mapping/mapping.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { PocComponent } from './poc/poc.component';
     JobAdEnrichmentComponent,
     OntologyComponent,
     OntologySkillPickerComponent,
-    PocComponent
+    PocComponent,
+    MappingComponent
   ],
   imports: [
     BrowserModule,
