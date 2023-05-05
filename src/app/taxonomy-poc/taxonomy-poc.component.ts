@@ -5,6 +5,8 @@ import { Observable, debounceTime, distinctUntilChanged, map, switchMap } from '
 import { JobSearchAPIService, JobSearchCompleteRequest } from '../job-search-api.service';
 import { SemanticConceptSearchAPIService, SemanticConceptSearchRequest } from '../semantic-concept-search-api.service';
 import { TaxonomyConcept } from '../taxonomy.service';
+import { MatChipSelectionChange } from '@angular/material/chips';
+import { JobedMatchByTextRequest } from '../jobed-connect-api.service';
 
 @Component({
   selector: 'app-taxonomy-poc',
@@ -16,6 +18,8 @@ export class TaxonomyPOCComponent {
   autocompleteControl = new FormControl('');
   autocompleteItems: Observable<string[]> | undefined;
   competensRecommendatios: TaxonomyConcept[] = []
+  selectedCompetenceRecomendation: Set<TaxonomyConcept> = new Set()
+  occupationRecommendatios: TaxonomyConcept[] = []
 
   constructor(
     private jobsearch: JobSearchAPIService,
@@ -39,7 +43,6 @@ export class TaxonomyPOCComponent {
   }
 
   submitKeyword() {
-    console.log(this.autocompleteControl.value);
     const keyword = this.autocompleteControl.value ?? ''
     const request: SemanticConceptSearchRequest = {
       array_of_words: [keyword],
@@ -47,10 +50,44 @@ export class TaxonomyPOCComponent {
       limit_number: 20
     }
     this.sematicSearch.conceptSearch(request).subscribe(response => {
-      console.log(response);
       this.competensRecommendatios = response[keyword].map(response => {
         return new TaxonomyConcept(response.id, response.type, response.preferred_label)
       })
     })
+  }
+
+  selectCompetenceRecomendation(event: MatChipSelectionChange, item: TaxonomyConcept) {
+    if (event.selected) {
+      this.selectedCompetenceRecomendation.add(item)
+    } else {
+      this.selectedCompetenceRecomendation.delete(item)
+    }
+    if (event.isUserInput) {
+      const keywords = Array.from(this.selectedCompetenceRecomendation).map(value => value.preferredLabel)
+      const request: SemanticConceptSearchRequest = {
+        array_of_words: keywords,
+        concept_type: 'occupation-name',
+        limit_number: 5
+      }
+      this.sematicSearch.conceptSearch(request).subscribe(response => {
+        this.occupationRecommendatios = []
+        for (const keyword of keywords) {
+          const concepts = response[keyword].map(response => {
+            return new TaxonomyConcept(response.id, response.type, response.preferred_label)
+          })
+          concepts.forEach(item => {
+            if(this.occupationRecommendatios.some(value => value.id === item.id)){
+              // Object already in array, do nothing
+          } else{
+            this.occupationRecommendatios.push(item)
+          }
+          })
+        }
+      })
+    }
+  }
+
+  isCompetenceRecomendationSelected(item: TaxonomyConcept): boolean {
+    return this.selectedCompetenceRecomendation.has(item)
   }
 }
