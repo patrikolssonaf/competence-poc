@@ -44,7 +44,7 @@ export class TaxonomyPOCComponent {
     const request: SemanticConceptSearchRequest = {
       array_of_words: [keyword],
       concept_type: 'skill',
-      limit_number: 10
+      limit_number: 20
     }
     this.sematicSearch.conceptSearch(request).subscribe(response => {
       console.log(response);

@@ -12,7 +12,7 @@
     <button mat-raised-button (click)="submitKeyword()">Kör</button>
   </form>
   <mat-divider></mat-divider>
-  <h3>Kan du?</h3>
+  <h3>Följande kompetenser har vi hittat genom semantisk sök:</h3>
   <mat-chip-listbox aria-label="Skills" multiple>
     <mat-chip-option *ngFor="let item of competensRecommendatios">{{item.preferredLabel}}</mat-chip-option>
   </mat-chip-listbox>
