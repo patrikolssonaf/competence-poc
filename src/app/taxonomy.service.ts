@@ -48,7 +48,38 @@ export class TaxonomyService {
     `
     const options = { params: new HttpParams().set('query', query) };
   
-    return this.http.get<SkillLookupResponse>('https://taxonomy.api.jobtechdev.se/v1/taxonomy/graphql', options).pipe(
+    return this.http.get<TaxonomyGrapiQLResponse>('https://taxonomy.api.jobtechdev.se/v1/taxonomy/graphql', options).pipe(
+      map(response => {
+        return response.data.concepts[0].related.map(related => {
+          return new TaxonomyConcept(related.id, related.type, related.preferred_label)
+        })
+      })
+    )
+  }
+
+  occupationGroupsFromCompetence(concept_id: string): Observable<TaxonomyConcept[]> {
+  
+    const query = `
+    query MyQuery {
+      concepts(id: "${concept_id}") {
+        id
+        type
+        preferred_label
+        related(type: "ssyk-level-4") {
+          id
+          preferred_label
+          type
+          broader {
+            id
+            preferred_label
+          }
+        }
+      }
+    }
+    `
+    const options = { params: new HttpParams().set('query', query) };
+  
+    return this.http.get<TaxonomyGrapiQLResponse>('https://taxonomy.api.jobtechdev.se/v1/taxonomy/graphql', options).pipe(
       map(response => {
         return response.data.concepts[0].related.map(related => {
           return new TaxonomyConcept(related.id, related.type, related.preferred_label)
@@ -113,7 +144,7 @@ export interface Autocomplete {
   'taxonomy/preferred-label': string;
 }
 
-export interface SkillLookupResponse {
+export interface TaxonomyGrapiQLResponse {
   data: {
     concepts: [
       {

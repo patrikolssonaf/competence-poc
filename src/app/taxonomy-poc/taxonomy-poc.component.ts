@@ -4,7 +4,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs';
 import { JobSearchAPIService, JobSearchCompleteRequest } from '../job-search-api.service';
 import { SemanticConceptSearchAPIService, SemanticConceptSearchRequest } from '../semantic-concept-search-api.service';
-import { TaxonomyConcept } from '../taxonomy.service';
+import { TaxonomyConcept, TaxonomyService } from '../taxonomy.service';
 import { MatChipSelectionChange } from '@angular/material/chips';
 import { JobedMatchByTextRequest } from '../jobed-connect-api.service';
 
@@ -20,10 +20,12 @@ export class TaxonomyPOCComponent {
   competensRecommendatios: TaxonomyConcept[] = []
   selectedCompetenceRecomendation: Set<TaxonomyConcept> = new Set()
   occupationRecommendatios: TaxonomyConcept[] = []
+  occupationGroupRecommendatios: TaxonomyConcept[] = []
 
   constructor(
     private jobsearch: JobSearchAPIService,
-    private sematicSearch: SemanticConceptSearchAPIService) { }
+    private sematicSearch: SemanticConceptSearchAPIService,
+    private taxonomy: TaxonomyService) { }
 
   ngOnInit() {
     this.autocompleteItems = this.autocompleteControl.valueChanges.pipe(
@@ -76,15 +78,31 @@ export class TaxonomyPOCComponent {
             return new TaxonomyConcept(response.id, response.type, response.preferred_label)
           })
           concepts.forEach(item => {
-            if(this.occupationRecommendatios.some(value => value.id === item.id)){
+            if (this.occupationRecommendatios.some(value => value.id === item.id)) {
               // Object already in array, do nothing
-          } else{
-            this.occupationRecommendatios.push(item)
-          }
+            } else {
+              this.occupationRecommendatios.push(item)
+            }
           })
         }
       })
+      this.fetchOccupationGroups()
     }
+  }
+
+  fetchOccupationGroups() {
+    this.occupationGroupRecommendatios = []
+    this.selectedCompetenceRecomendation.forEach(competence => {
+      this.taxonomy.occupationGroupsFromCompetence(competence.id).subscribe(response => {
+        response.forEach(item => {
+          if (this.occupationGroupRecommendatios.some(value => value.id === item.id)) {
+            // Object already in array, do nothing
+          } else {
+            this.occupationGroupRecommendatios.push(item)
+          }
+        })
+      })
+    });
   }
 
   isCompetenceRecomendationSelected(item: TaxonomyConcept): boolean {

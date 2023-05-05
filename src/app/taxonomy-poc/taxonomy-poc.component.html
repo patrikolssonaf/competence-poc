@@ -23,3 +23,7 @@
 <mat-chip-listbox aria-label="Skills" multiple>
     <mat-chip-option *ngFor="let item of occupationRecommendatios">{{item.preferredLabel}}</mat-chip-option>
 </mat-chip-listbox>
+<h3>Baserat på dina val av kompetenser ovan; Följande yrkesgrupper har vi hittat i taxonomiträdet:</h3>
+<mat-chip-listbox aria-label="Skills" multiple>
+    <mat-chip-option *ngFor="let item of occupationGroupRecommendatios">{{item.preferredLabel}}</mat-chip-option>
+</mat-chip-listbox>
