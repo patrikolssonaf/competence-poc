@@ -25,6 +25,7 @@ import { OntologyComponent } from './ontology/ontology.component';
 import { OntologySkillPickerComponent } from './ontology-skill-picker/ontology-skill-picker.component';
 import { PocComponent } from './poc/poc.component';
 import { MappingComponent } from './mapping/mapping.component';
+import { TaxonomyPOCComponent } from './taxonomy-poc/taxonomy-poc.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { MappingComponent } from './mapping/mapping.component';
     OntologyComponent,
     OntologySkillPickerComponent,
     PocComponent,
-    MappingComponent
+    MappingComponent,
+    TaxonomyPOCComponent
   ],
   imports: [
     BrowserModule,

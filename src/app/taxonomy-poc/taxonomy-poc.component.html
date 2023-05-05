@@ -1,0 +1,18 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Skill</mat-label>
+      <input type="text" placeholder="Write a skill" aria-label="Write a skill" matInput
+        [formControl]="autocompleteControl" [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let item of autocompleteItems | async" [value]="item">
+          {{item}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button mat-raised-button (click)="submitKeyword()">Kör</button>
+  </form>
+  <mat-divider></mat-divider>
+  <h3>Kan du?</h3>
+  <mat-chip-listbox aria-label="Skills" multiple>
+    <mat-chip-option *ngFor="let item of competensRecommendatios">{{item.preferredLabel}}</mat-chip-option>
+  </mat-chip-listbox>
