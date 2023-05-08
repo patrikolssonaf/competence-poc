@@ -20,6 +20,7 @@ export class TaxonomyPOCComponent {
   competensRecommendatios: TaxonomyConcept[] = []
   occupationGroupRecommendatios: TaxonomyConcept[] = []
   competensFromOccupationGroupRecommendatios: [string, GroupCompetence[]][] = []
+  profileSkills: TaxonomyConcept[] = []
 
   constructor(
     private jobsearch: JobSearchAPIService,
@@ -102,7 +103,15 @@ export class TaxonomyPOCComponent {
   }
 
   selectCompetenceForProfile(event: MatChipSelectionChange, item: GroupCompetence) {
-    console.log(item);
+    const skill: TaxonomyConcept = {
+      id: item.id,
+      type: item.type,
+      preferredLabel: item.preferred_label
+    }
+
+    if(!this.profileSkills.some(s => s.id === item.id)){
+      this.profileSkills.push(skill)
+    }
   }
 
 }

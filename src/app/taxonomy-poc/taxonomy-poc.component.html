@@ -1,32 +1,51 @@
-<form class="example-form">
-    <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Nyckelord</mat-label>
-        <input type="text" placeholder="Skriv in ett nyckelord" aria-label="Write a skill" matInput
-            [formControl]="autocompleteControl" [matAutocomplete]="auto">
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let item of autocompleteItems | async" [value]="item">
-                {{item}}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
-    <button mat-raised-button (click)="submitKeyword()">Kör</button>
-</form>
-<mat-divider></mat-divider>
-<h3>Följande kompetenser har vi hittat genom semantisk sök:</h3>
-<mat-chip-listbox aria-label="Skills">
-    <mat-chip-option *ngFor="let item of competensRecommendatios"
-        (selectionChange)="selectCompetenceRecomendation($event, item)">{{item.preferredLabel}}</mat-chip-option>
-</mat-chip-listbox>
-<mat-divider></mat-divider>
-<h3>Baserat på dina val av kompetenser ovan; Följande yrkesgrupper har vi hittat i taxonomiträdet:</h3>
-<mat-chip-listbox aria-label="Skills">
-    <mat-chip-option *ngFor="let item of occupationGroupRecommendatios" (selectionChange)="selectOccupationGroup($event, item)">{{item.preferredLabel}}</mat-chip-option>
-</mat-chip-listbox>
-<mat-divider></mat-divider>
-<h3>Baserat på ditt val av yrkesgrupp ovan; Följande kompetenser har vi hittat i taxonomiträdet:</h3>
-<div *ngFor="let group of competensFromOccupationGroupRecommendatios">
-    <h4>{{group[0]}}</h4>
-    <mat-chip-listbox aria-label="Skills" multiple>
-        <mat-chip-option *ngFor="let item of group[1]" (selectionChange)="selectCompetenceForProfile($event, item)">{{item.preferred_label}}</mat-chip-option>
-    </mat-chip-listbox>
+<div class="grid-container">
+    <div class="grid-item">
+        <form class="example-form">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Nyckelord</mat-label>
+                <input type="text" placeholder="Skriv in ett nyckelord" aria-label="Write a skill" matInput
+                    [formControl]="autocompleteControl" [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                    <mat-option *ngFor="let item of autocompleteItems | async" [value]="item">
+                        {{item}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <button mat-raised-button (click)="submitKeyword()">Kör</button>
+        </form>
+        <mat-divider></mat-divider>
+        <div class="datasection">
+            <h3>Följande kompetenser har vi hittat genom semantisk sök:</h3>
+            <mat-chip-listbox aria-label="Skills">
+                <mat-chip-option *ngFor="let item of competensRecommendatios"
+                    (selectionChange)="selectCompetenceRecomendation($event, item)">{{item.preferredLabel}}</mat-chip-option>
+            </mat-chip-listbox>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="datasection">
+            <h3>Baserat på dina val av kompetenser ovan; Följande yrkesgrupper har vi hittat i taxonomiträdet:</h3>
+            <mat-chip-listbox aria-label="Skills">
+                <mat-chip-option *ngFor="let item of occupationGroupRecommendatios"
+                    (selectionChange)="selectOccupationGroup($event, item)">{{item.preferredLabel}}</mat-chip-option>
+            </mat-chip-listbox>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="datasection">
+            <h3>Baserat på ditt val av yrkesgrupp ovan; Följande kompetenser har vi hittat i taxonomiträdet:</h3>
+            <div *ngFor="let group of competensFromOccupationGroupRecommendatios">
+                <strong>{{group[0]}}</strong>
+                <mat-chip-listbox aria-label="Skills" multiple>
+                    <mat-chip-option *ngFor="let item of group[1]"
+                        (selectionChange)="selectCompetenceForProfile($event, item)">{{item.preferred_label}}</mat-chip-option>
+                </mat-chip-listbox>
+            </div>
+        </div>
+    </div>
+    <div class="grid-item">
+        <h2>Min profil</h2>
+        <mat-chip-listbox aria-label="Skills">
+            <mat-chip-option *ngFor="let item of profileSkills"
+                selectable="false">{{item.preferredLabel}}</mat-chip-option>
+        </mat-chip-listbox>
+    </div>
 </div>
