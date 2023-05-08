@@ -21,7 +21,7 @@ export interface SemanticConceptSearchRequest {
   limit_number: number;
 }
 
-interface SemanticConceptItem {
+export interface SemanticConceptItem {
   id: string;
   type: string;
   preferred_label: string;
@@ -31,6 +31,6 @@ interface SemanticConceptItem {
   distance: string;
 }
 
-interface SemanticConceptSearchResponse {
+export interface SemanticConceptSearchResponse {
   [key: string]: SemanticConceptItem[];
 }

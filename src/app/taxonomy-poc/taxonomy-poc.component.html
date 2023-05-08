@@ -1,7 +1,7 @@
 <form class="example-form">
     <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Skill</mat-label>
-        <input type="text" placeholder="Write a skill" aria-label="Write a skill" matInput
+        <mat-label>Nyckelord</mat-label>
+        <input type="text" placeholder="Skriv in ett nyckelord" aria-label="Write a skill" matInput
             [formControl]="autocompleteControl" [matAutocomplete]="auto">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
             <mat-option *ngFor="let item of autocompleteItems | async" [value]="item">
