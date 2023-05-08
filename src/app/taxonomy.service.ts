@@ -57,6 +57,31 @@ export class TaxonomyService {
     )
   }
 
+  fetchOccupationGroup(concept_id: string): Observable<TaxonomyGrapiQLResponse> {
+  
+    const query = `
+    query MyQuery {
+      concepts(id: "${concept_id}") {
+        id
+        type
+        preferred_label
+        related(type: "skill") {
+          id
+          preferred_label
+          type
+          broader {
+            id
+            preferred_label
+          }
+        }
+      }
+    }
+    `
+    const options = { params: new HttpParams().set('query', query) };
+  
+    return this.http.get<TaxonomyGrapiQLResponse>('https://taxonomy.api.jobtechdev.se/v1/taxonomy/graphql', options)
+  }
+
   occupationGroupsFromCompetence(concept_id: string): Observable<TaxonomyConcept[]> {
   
     const query = `
@@ -156,6 +181,12 @@ export interface TaxonomyGrapiQLResponse {
             id: string
             preferred_label: string
             type: string
+            broader: [
+              {
+                id: string
+                preferred_label: string
+              }
+            ]
           }
         ]
       }

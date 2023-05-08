@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Observable, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs';
+import { Observable, debounceTime, distinctUntilChanged, flatMap, groupBy, map, mergeMap, of, switchMap, toArray, zip } from 'rxjs';
 import { JobSearchAPIService, JobSearchCompleteRequest } from '../job-search-api.service';
 import { SemanticConceptSearchAPIService, SemanticConceptSearchRequest } from '../semantic-concept-search-api.service';
 import { TaxonomyConcept, TaxonomyService } from '../taxonomy.service';
@@ -21,6 +21,7 @@ export class TaxonomyPOCComponent {
   selectedCompetenceRecomendation: Set<TaxonomyConcept> = new Set()
   occupationRecommendatios: TaxonomyConcept[] = []
   occupationGroupRecommendatios: TaxonomyConcept[] = []
+  competensFromOccupationGroupRecommendatios: [string, GroupCompetence[]][] = []
 
   constructor(
     private jobsearch: JobSearchAPIService,
@@ -51,6 +52,11 @@ export class TaxonomyPOCComponent {
       concept_type: 'skill',
       limit_number: 20
     }
+    this.competensRecommendatios = []
+    this.selectedCompetenceRecomendation = new Set()
+    this.occupationRecommendatios = []
+    this.occupationGroupRecommendatios = []
+    this.competensFromOccupationGroupRecommendatios = []
     this.sematicSearch.conceptSearch(request).subscribe(response => {
       this.competensRecommendatios = response[keyword].map(response => {
         return new TaxonomyConcept(response.id, response.type, response.preferred_label)
@@ -108,4 +114,37 @@ export class TaxonomyPOCComponent {
   isCompetenceRecomendationSelected(item: TaxonomyConcept): boolean {
     return this.selectedCompetenceRecomendation.has(item)
   }
+
+  selectOccupationGroup(event: MatChipSelectionChange, item: TaxonomyConcept) {
+    this.taxonomy.fetchOccupationGroup(item.id).pipe(
+      mergeMap(response => {
+        return response.data.concepts[0].related.map(c => {
+          const item: GroupCompetence = {
+            id: c.id,
+            type: c.type,
+            preferred_label: c.preferred_label,
+            group: c.broader[0].preferred_label
+          }
+          return item
+        })
+      }),
+      groupBy(concept => concept.group, c => c),
+      mergeMap(group => zip(of(group.key), group.pipe(toArray()))),
+      toArray()
+    ).subscribe(value => {
+      this.competensFromOccupationGroupRecommendatios = value
+    })
+  }
+
+  selectCompetenceForProfile(event: MatChipSelectionChange, item: GroupCompetence) {
+    console.log(item);
+  }
+
+}
+
+interface GroupCompetence {
+  id: string
+  type: string
+  preferred_label: string
+  group: string
 }

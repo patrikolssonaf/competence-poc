@@ -13,17 +13,26 @@
 </form>
 <mat-divider></mat-divider>
 <h3>Följande kompetenser har vi hittat genom semantisk sök:</h3>
-<mat-chip-listbox aria-label="Skills" multiple>
+<mat-chip-listbox aria-label="Skills">
     <mat-chip-option *ngFor="let item of competensRecommendatios"
         (selectionChange)="selectCompetenceRecomendation($event, item)"
         [selected]="isCompetenceRecomendationSelected(item)">{{item.preferredLabel}}</mat-chip-option>
 </mat-chip-listbox>
 <mat-divider></mat-divider>
 <h3>Baserat på dina val av kompetenser ovan; Följande yrken har vi hittat genom semantisk sök:</h3>
-<mat-chip-listbox aria-label="Skills" multiple>
+<mat-chip-listbox aria-label="Skills">
     <mat-chip-option *ngFor="let item of occupationRecommendatios">{{item.preferredLabel}}</mat-chip-option>
 </mat-chip-listbox>
+<mat-divider></mat-divider>
 <h3>Baserat på dina val av kompetenser ovan; Följande yrkesgrupper har vi hittat i taxonomiträdet:</h3>
-<mat-chip-listbox aria-label="Skills" multiple>
-    <mat-chip-option *ngFor="let item of occupationGroupRecommendatios">{{item.preferredLabel}}</mat-chip-option>
+<mat-chip-listbox aria-label="Skills">
+    <mat-chip-option *ngFor="let item of occupationGroupRecommendatios" (selectionChange)="selectOccupationGroup($event, item)">{{item.preferredLabel}}</mat-chip-option>
 </mat-chip-listbox>
+<mat-divider></mat-divider>
+<h3>Baserat på ditt val av yrkesgrupp ovan; Följande kompetenser har vi hittat i taxonomiträdet:</h3>
+<div *ngFor="let group of competensFromOccupationGroupRecommendatios">
+    <h4>{{group[0]}}</h4>
+    <mat-chip-listbox aria-label="Skills" multiple>
+        <mat-chip-option *ngFor="let item of group[1]" (selectionChange)="selectCompetenceForProfile($event, item)">{{item.preferred_label}}</mat-chip-option>
+    </mat-chip-listbox>
+</div>
