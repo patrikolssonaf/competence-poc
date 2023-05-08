@@ -74,6 +74,8 @@ export interface EnrichDocumentRequest {
 export interface EnrichConcept {
   concept_label: string;
   term: string;
+  sentence: string;
+  sentence_index: number;
 }
 
 export interface EnrichedCandidates {

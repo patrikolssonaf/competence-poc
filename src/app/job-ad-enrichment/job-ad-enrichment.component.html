@@ -16,21 +16,15 @@
         <button mat-raised-button color="warn" (click)="empty()">Töm</button>
     </p>
 </form>
+<p>Competencies</p>
+<mat-card *ngFor="let item of enrichedCompetencies" class="competence-card">
+    <mat-card-content>
+        <span [appHighlight]="[item.term,item.sentence]"></span>
+        <div>Taxonomy: {{item.taxConcept.preferredLabel}}</div>
+    </mat-card-content>
+</mat-card>
+<mat-divider></mat-divider>
 <div *ngFor="let document of enrichments">
-    <p>
-        Competencies
-        <mat-chip-listbox aria-label="Competencies" multiple>
-            <mat-chip-option
-                *ngFor="let item of document.enriched_candidates.competencies">{{item.concept_label}}</mat-chip-option>
-        </mat-chip-listbox>
-    </p>
-    <p>
-        Competencies (Taxonomy from semantic search)
-        <mat-chip-listbox aria-label="Competencies" multiple>
-            <mat-chip-option
-                *ngFor="let item of semanticConceptItems">{{item.preferred_label}}</mat-chip-option>
-        </mat-chip-listbox>
-    </p>
     <p>
         Geos
         <mat-chip-listbox aria-label="Geos" multiple>
