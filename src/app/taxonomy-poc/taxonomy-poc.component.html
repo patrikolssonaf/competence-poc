@@ -15,13 +15,7 @@
 <h3>Följande kompetenser har vi hittat genom semantisk sök:</h3>
 <mat-chip-listbox aria-label="Skills">
     <mat-chip-option *ngFor="let item of competensRecommendatios"
-        (selectionChange)="selectCompetenceRecomendation($event, item)"
-        [selected]="isCompetenceRecomendationSelected(item)">{{item.preferredLabel}}</mat-chip-option>
-</mat-chip-listbox>
-<mat-divider></mat-divider>
-<h3>Baserat på dina val av kompetenser ovan; Följande yrken har vi hittat genom semantisk sök:</h3>
-<mat-chip-listbox aria-label="Skills">
-    <mat-chip-option *ngFor="let item of occupationRecommendatios">{{item.preferredLabel}}</mat-chip-option>
+        (selectionChange)="selectCompetenceRecomendation($event, item)">{{item.preferredLabel}}</mat-chip-option>
 </mat-chip-listbox>
 <mat-divider></mat-divider>
 <h3>Baserat på dina val av kompetenser ovan; Följande yrkesgrupper har vi hittat i taxonomiträdet:</h3>
