@@ -45,7 +45,6 @@ export class PocComponent {
   }
 
   setOriginSkill(event: MatAutocompleteSelectedEvent) {
-    console.log(event);
     this.originSkill = event.option.value
     this.selectedSkills.clear()
     this.selectedSkills.add(this.originSkill?.concept ?? "")

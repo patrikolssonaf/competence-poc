@@ -49,7 +49,7 @@ export class TaxonomyPOCComponent {
     const request: SemanticConceptSearchRequest = {
       array_of_words: [keyword],
       concept_type: 'skill',
-      limit_number: 20
+      limit_number: 50
     }
     this.competensRecommendatios = []
     this.occupationGroupRecommendatios = []
