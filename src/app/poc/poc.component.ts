@@ -6,6 +6,7 @@ import { JobSearchAPIService, JobSearchResponse, JobSearchSearchRequest } from '
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipSelectionChange } from '@angular/material/chips';
 import { JobedConnectAPIService, JobedEnrichedOccupationsRequest, JobedMatchByTextRequest, RelatedOccupation } from '../jobed-connect-api.service';
+import { TaxonomyConcept } from '../taxonomy.service';
 
 @Component({
   selector: 'app-poc',
@@ -17,6 +18,7 @@ export class PocComponent {
   autocompleteControl = new FormControl('');
   autocompleteSkills: Observable<OntologyItem[]> | undefined;
   originSkill: OntologyItem | undefined
+  foundOccupationFromOriginSkill: TaxonomyConcept | undefined
   jobsearchRequest: JobSearchSearchRequest | undefined
   jobSearchResult: JobSearchResult | undefined
   selectedSkills: Set<string> = new Set()
@@ -57,6 +59,7 @@ export class PocComponent {
 
   fetchSkillRecomendations() {
     this.recomendedSkills = []
+    this.foundOccupationFromOriginSkill = undefined
     const request: JobSearchSearchRequest = {
       q: Array.from(this.selectedSkills)[0],
       limit: 0,
@@ -67,6 +70,11 @@ export class PocComponent {
     this.jobsearch.search(request).pipe(
       switchMap((value, index) => {
         const occupation = value.stats[0].values[0]
+        this.foundOccupationFromOriginSkill = {
+          id: occupation.concept_id,
+          type: 'occupation-name',
+          preferredLabel: occupation.term
+        }
         const request: JobedEnrichedOccupationsRequest = {
           occupation_id: occupation.concept_id,
           include_metadata: true

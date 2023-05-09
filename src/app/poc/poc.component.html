@@ -2,8 +2,8 @@
   <div class="grid-item">
     <form class="example-form">
       <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Skill</mat-label>
-        <input type="text" placeholder="Write a skill" aria-label="Write a skill" matInput
+        <mat-label>Nyckelord</mat-label>
+        <input type="text" placeholder="Skriv in ett nyckelord" aria-label="Skriv in ett nyckelord" matInput
           [formControl]="autocompleteControl" [matAutocomplete]="auto">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="setOriginSkill($event)"
           [displayWith]="displayOriginSkill">
@@ -15,7 +15,7 @@
       <button mat-raised-button color="warn" (click)="clearOriginSkill()">Rensa</button>
     </form>
     <mat-divider></mat-divider>
-    <h3>Kan du?</h3>
+    <h3>Följande kompetenser finns för yrket <b>{{foundOccupationFromOriginSkill?.preferredLabel}}</b></h3>
     <mat-chip-listbox aria-label="Skills" multiple>
       <mat-chip-option *ngFor="let skill of recomendedSkills"
         (selectionChange)="selectSkill($event, skill)"
@@ -35,7 +35,7 @@
     </mat-card>
   </div>
   <div class="grid-item">
-    <h3>Selected skills (Ontology)</h3>
+    <h3>Min profil</h3>
     <mat-chip-listbox class="mat-mdc-chip-set-stacked" multiple>
       <mat-chip-option *ngFor="let skill of selectedSkills">{{skill}}</mat-chip-option>
     </mat-chip-listbox>
