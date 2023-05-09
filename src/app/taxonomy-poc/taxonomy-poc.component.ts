@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Observable, debounceTime, distinctUntilChanged, flatMap, groupBy, map, mergeMap, of, switchMap, toArray, zip } from 'rxjs';
+import { Observable, concatMap, debounceTime, distinct, distinctUntilChanged, flatMap, from, groupBy, map, mergeMap, observeOn, of, switchMap, toArray, zip } from 'rxjs';
 import { JobSearchAPIService, JobSearchCompleteRequest } from '../job-search-api.service';
 import { SemanticConceptSearchAPIService, SemanticConceptSearchRequest } from '../semantic-concept-search-api.service';
-import { TaxonomyConcept, TaxonomyService } from '../taxonomy.service';
+import { TaxonomyConcept, TaxonomyGrapiQLRequest, TaxonomyService } from '../taxonomy.service';
 import { MatChipSelectionChange } from '@angular/material/chips';
 import { JobedMatchByTextRequest } from '../jobed-connect-api.service';
 
@@ -21,6 +21,7 @@ export class TaxonomyPOCComponent {
   occupationGroupRecommendatios: TaxonomyConcept[] = []
   competensFromOccupationGroupRecommendatios: [string, GroupCompetence[]][] = []
   profileSkills: TaxonomyConcept[] = []
+  occupationsForProfile: TaxonomyConcept[] = []
 
   constructor(
     private jobsearch: JobSearchAPIService,
@@ -112,6 +113,54 @@ export class TaxonomyPOCComponent {
     if(!this.profileSkills.some(s => s.id === item.id)){
       this.profileSkills.push(skill)
     }
+    this.fetchOccupationsForProfile()
+  }
+
+  fetchOccupationsForProfile() {
+    from(this.profileSkills).pipe(
+      concatMap(concept => {
+        const query = `
+        query Atlas {
+          concepts(id: "${concept.id}") {
+            type
+            preferred_label
+            related(type: "ssyk-level-4") {
+              id
+              preferred_label
+              type
+              related(type: "occupation-name") {
+                id
+                preferred_label
+              }
+              narrower(type: "occupation-name") {
+                id
+                preferred_label
+                type
+              }
+            }
+            
+          }
+        }
+        `
+        const request: TaxonomyGrapiQLRequest = {
+          query: query
+        }
+        return this.taxonomy.graphql(request)
+      }),
+      concatMap(response => response.data.concepts[0].related[0].narrower),
+      distinct(({ id}) => id),
+      map(response => {
+        const concept: TaxonomyConcept = {
+          id: response.id,
+          type: response.type,
+          preferredLabel: response.preferred_label
+        }
+        return concept
+      }),
+      toArray()
+    ).subscribe(response => {
+      this.occupationsForProfile = response
+    })
   }
 
 }

@@ -47,5 +47,12 @@
             <mat-chip-option *ngFor="let item of profileSkills"
                 selectable="false">{{item.preferredLabel}}</mat-chip-option>
         </mat-chip-listbox>
+        <mat-divider></mat-divider>
+        <h2>Förslag på yrken</h2>
+        <mat-chip-listbox aria-label="Skills">
+            <mat-chip-option *ngFor="let item of occupationsForProfile"
+                selectable="false">{{item.preferredLabel}}</mat-chip-option>
+        </mat-chip-listbox>
+        
     </div>
 </div>

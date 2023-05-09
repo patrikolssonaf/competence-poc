@@ -161,12 +161,22 @@ export class TaxonomyService {
       )
       
   }
+
+  graphql(request: TaxonomyGrapiQLRequest): Observable<TaxonomyGrapiQLResponse> {
+    const options = { params: new HttpParams().set('query', request.query) };
+    return this.http.get<TaxonomyGrapiQLResponse>('https://taxonomy.api.jobtechdev.se/v1/taxonomy/graphql', options)
+  }
+
 }
 
 export interface Autocomplete {
   'taxonomy/id': string;
   'taxonomy/type': string;
   'taxonomy/preferred-label': string;
+}
+
+export interface TaxonomyGrapiQLRequest {
+  query: string
 }
 
 export interface TaxonomyGrapiQLResponse {
@@ -185,6 +195,14 @@ export interface TaxonomyGrapiQLResponse {
               {
                 id: string
                 preferred_label: string
+                type: string
+              }
+            ]
+            narrower: [
+              {
+                id: string
+                preferred_label: string
+                type: string
               }
             ]
           }
